@@ -12,8 +12,7 @@ except:
    import processing
    data = processing.parsify()
    # Now write it into a new file.
-   pd.DataFrame(np.array(data).T).to_csv(
-       F"{processedData}.csv", header=False, index=False)
+   pd.DataFrame(np.array(data).T).to_csv(f"{processedData}.csv", header=False, index=False)
 
 
 class Crohns():
@@ -59,7 +58,10 @@ class Crohns():
             # print(self.foodToIng[food])
             return self.foodToIng[food]
     def mostLikely(self):
-        self.ingEaten.sort(lambda x: x[3])
+        self.ingEaten = sorted(self.ingEaten, reverse = True, key=lambda x:x[3])
+    def printN(self, something):
+        for i in something:
+            print(i)
 
 
 i = Crohns()
@@ -71,4 +73,5 @@ i.enterFood("WHITE BREAD", 0)
 i.enterFood("TOMATO", 1)
 i.enterFood("MILK", 1)
 i.enterFood("YOGURT", 1)
-print(i.ingEaten)
+i.mostLikely()
+i.printN(i.ingEaten)
