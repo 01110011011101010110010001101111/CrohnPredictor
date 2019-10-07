@@ -59,9 +59,43 @@ class Crohns():
             return self.foodToIng[food]
     def mostLikely(self):
         self.ingEaten = sorted(self.ingEaten, reverse = True, key=lambda x:x[3])
+    def filter(self):
+        self.mostLikely()
+        # print(self.ingEaten)
+        num = self.ingEaten[0][3]
+        # print(num)
+        count = 0
+        self.order = [[self.ingEaten[0]]]
+        i = 1
+        while i < len(self.ingEaten):
+            if (self.ingEaten[i][3] == num):
+                self.order[count].append(self.ingEaten[i])
+            else:
+                num = self.ingEaten[i][3]
+                count+=1
+                self.order.append([self.ingEaten[i]])
+            # print(len(self.order), num)
+            i+=1
+            # while i < len(self.ingEaten) and self.ingEaten[i][3] == num:
+            #     self.order[count].append(self.ingEaten[i])
+            #     i+=1
+            #     # print(self.order)
+            # # i+=1
+            # if not i < len(self.ingEaten):
+            #     num = self.ingEaten[i][3]
+            #     self.order.append([self.ingEaten[i]])
+            #     count+=1
+            #     i+=1
+            # print(count, i, num)
+        # print(self.order)
+        return self.order
     def printN(self, something):
         for i in something:
             print(i)
+    def printFa(self):
+        for i in self.order:
+            print(f"\nOCCURING {i[0][3]} TIMES:")
+            print([x[0] for x in i])
 
 
 i = Crohns()
@@ -73,5 +107,7 @@ i.enterFood("WHITE BREAD", 0)
 i.enterFood("TOMATO", 1)
 i.enterFood("MILK", 1)
 i.enterFood("YOGURT", 1)
-i.mostLikely()
-i.printN(i.ingEaten)
+# i.mostLikely()
+# i.printN(i.ingEaten)
+i.filter()
+i.printFa()
