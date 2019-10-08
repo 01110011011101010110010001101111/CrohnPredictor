@@ -4,6 +4,7 @@ The Super Cool Thingy
 
 import numpy as np
 import pandas as pd
+import makeAccount
 processedData = "processedData"
 try:
     data = pd.read_csv(F"{processedData}.csv").values()
@@ -104,7 +105,5 @@ i.enterFood("WHITE BREAD", 0)
 i.enterFood("TOMATO", 1)
 i.enterFood("MILK", 1)
 i.enterFood("YOGURT", 1)
-# i.mostLikely()
-# i.printN(i.ingEaten)
 i.filter()
 i.printFa()
