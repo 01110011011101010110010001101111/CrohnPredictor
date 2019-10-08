@@ -16,8 +16,10 @@ except:
    pd.DataFrame(np.array(data).T).to_csv(f"{processedData}.csv", header=False, index=False)
 
 
-class Crohns():
-    def __init__(self, parent="processedData.csv"):
+class Crohns(makeAccount.CSV):
+    def __init__(self, parent="processedData.csv", accounts = "Accounts"):
+        super()
+        super().__init__(accounts)
         self.food = data[0]
         self.ing = data[1]
         self.ingEaten = [] # Key: [[ingName, total # of inflams, total # of times eaten, % of inflams]]
@@ -86,6 +88,7 @@ class Crohns():
                 count+=1
                 self.order.append([self.ingEaten[i]]) # Else creates a new frequency list
             i+=1
+        self.editStats(str(self.order))
         return self.order
     def printFa(self):
         '''
@@ -97,6 +100,7 @@ class Crohns():
 
 
 i = Crohns()
+i.login("SHREYA", "name")
 i.openData()
 i.enterFood("FRENCH FRIES", 0)
 i.enterFood("POPCORN", 1)
