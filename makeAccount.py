@@ -17,7 +17,9 @@ class CSV():
         self.users = list(self.users)
         self.names = list(self.names)
         self.words = list(self.words)
+        # self.statsList = [eval(i) for i in self.stats]
         self.stats = list(self.stats)
+        print(self.stats)
         self.authenticated = False
         self.user = ""
         # self.numToInfo = [[] num, data for enumerate(zip(self.users, self.names, self.stats)]
@@ -31,6 +33,10 @@ class CSV():
                 self.authenticated = True
                 self.user = user
                 self.ind = self.userToNum[self.user]
+                self.userUsername = self.users[self.ind]
+                self.userRealName = self.names[self.ind]
+                self.userStat = eval(self.stats[self.ind])
+                print(self.userStat)
             else:
                 print("INVALID CREDENTIALS")
         except:
@@ -41,7 +47,9 @@ class CSV():
         self.names = list(self.names)
         self.words = list(self.words)
         self.stats = list(self.stats)
+        # self.statsList = [eval(i) for i in self.stats]
         self.userToNum = {user: num for num, user in enumerate(self.users)}
+        print(self.userToNum)
     def addClient(self, user, name, pas, stat):
         if user in self.users:
             print("ERROR: PICK ANOTHER NAME")

@@ -23,7 +23,18 @@ class Crohns(makeAccount.CSV):
         self.food = data[0]
         self.ing = data[1]
         self.ingEaten = [] # Key: [[ingName, total # of inflams, total # of times eaten, % of inflams]]
-
+    
+    def loginAndUpdate(self, username, password):
+        self.login(username, password)
+        self.order = self.userStat
+        self.orderToEaten()
+    def orderToEaten(self):
+        '''
+        Makes the fancy array based on % change into just an array of the ingredients eaten
+        '''
+        self.ingEaten = [i for j in self.order for i in j]
+        # print(len(self.ingEaten))
+        # print(self.ingEaten)
     def openData(self):
         '''
         This will open the data and create keys.
@@ -40,9 +51,9 @@ class Crohns(makeAccount.CSV):
 
     def enterFood(self, food, inflammed):
         '''
-        This will enter the data into the lsit of foods eaten.
+        This will enter the data into the list of foods eaten.
         '''
-        results = self.findFood(food) # Whether the food is in the database
+        results = self.findFood(food) # Whether the food is in the database; if yes, returns array
         if results:
             for i in results:
                 inIt = False
@@ -95,12 +106,14 @@ class Crohns(makeAccount.CSV):
         This is a nice way to print out the foods based on frequency.
         '''
         for i in self.order:
-            print(f"\nOCCURING {i[0][3]} TIMES:")
+            print(f"\nOCCURING IN {i[0][3]*100}%:")
             print([x[0] for x in i])
 
 
 i = Crohns()
-i.login("SHREYA", "name")
+i.addClient("USERname", "Shreya C", "password", "[]")
+i.loginAndUpdate("USERname", "password")
+# i.login("SHREYA", "name")
 i.openData()
 i.enterFood("FRENCH FRIES", 0)
 i.enterFood("POPCORN", 1)
