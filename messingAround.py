@@ -25,10 +25,9 @@ class Crohns(makeAccount.CSV):
         self.ingEaten = [] # Key: [[ingName, total # of inflams, total # of times eaten, % of inflams]]
     
     def loginAndUpdate(self, username, password):
-        if(self.authenticated):
-            self.login(username, password)
-            self.order = self.userStat
-            self.orderToEaten()
+        self.login(username, password)
+        self.order = self.userStat
+        self.orderToEaten()
     def orderToEaten(self):
         '''
         Makes the fancy array based on % change into just an array of the ingredients eaten
@@ -66,7 +65,8 @@ class Crohns(makeAccount.CSV):
                         inIt = True
                         break
                 if not inIt: # If they haven't eaten the food yet.
-                    self.ingEaten.append([i, int(inflammed), 1, float(inflammed)])
+                    if inflammed: self.ingEaten.append([i, 1, 1, 1.0])
+                    else: self.ingEaten.append([i, 0, 1, 0.0])
 
     def findFood(self, food):
         '''
@@ -109,17 +109,19 @@ class Crohns(makeAccount.CSV):
             print(f"\nOCCURING IN {i[0][3]*100}%:")
             print([x[0] for x in i])
 
+
 i = Crohns()
-i.addClient("USERname", "Shreya C", "password", "[]")
-i.loginAndUpdate("USERname", "password")
-# i.login("SHREYA", "name")
-i.openData()
-i.enterFood("FRENCH FRIES", 0)
-i.enterFood("POPCORN", 1)
-i.enterFood("SPAGHETTI", 0)
-i.enterFood("WHITE BREAD", 0)
-i.enterFood("TOMATO", 1)
-i.enterFood("MILK", 1)
-i.enterFood("YOGURT", 1)
-i.filter()
-i.printFa()
+
+# i.addClient("USERname", "Shreya C", "password", "[]")
+# i.loginAndUpdate("USERname", "password")
+# # i.login("SHREYA", "name")
+# i.openData()
+# i.enterFood("FRENCH FRIES", 0)
+# i.enterFood("POPCORN", 1)
+# i.enterFood("SPAGHETTI", 0)
+# i.enterFood("WHITE BREAD", 0)
+# i.enterFood("TOMATO", 1)
+# i.enterFood("MILK", 1)
+# i.enterFood("YOGURT", 1)
+# i.filter()
+# i.printFa()

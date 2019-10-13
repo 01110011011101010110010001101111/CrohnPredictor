@@ -5,6 +5,7 @@ Not super secure, but it works...?
 
 import pandas as pd 
 import numpy as np
+import hashing
 
 # i = open("accounts.csv")
 # keys = np.array([10,4])
@@ -29,7 +30,7 @@ class CSV():
         self.ind = 0
     def login(self, user, pas):
         try:
-            if pas == self.userToPass[user]:
+            if hashing.hashTag(pas) == self.userToPass[user]:
                 self.authenticated = True
                 self.user = user
                 self.ind = self.userToNum[self.user]
@@ -37,8 +38,10 @@ class CSV():
                 self.userRealName = self.names[self.ind]
                 self.userStat = eval(self.stats[self.ind])
                 print(self.userStat)
+                return True
             else:
                 print("INVALID CREDENTIALS")
+                return False
         except:
             print("INVALID CREDENTIALS")
     def rereadCSV(self, accounts = "Accounts"):
@@ -56,7 +59,7 @@ class CSV():
             return
         self.users.append(user)
         self.names.append(name)
-        self.words.append(pas)
+        self.words.append(hashing.hashTag(pas))
         self.stats.append(stat)
         self.updateCSV()
         self.rereadCSV()
@@ -82,8 +85,8 @@ class CSV():
         else:
             print("ERROR: NOT AUTHENTICATED")
     def changePassword(self, oldP, newP):
-        if self.authenticated and oldP == self.words[self.ind]:
-            self.words[self.ind] = newP
+        if self.authenticated and hashing.hashTag(oldP) == self.words[self.ind]:
+            self.words[self.ind] = hashing.hashTag(newP)
             self.updateCSV()
             self.rereadCSV()
         else:
