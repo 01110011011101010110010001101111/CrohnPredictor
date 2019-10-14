@@ -29,6 +29,9 @@ class CSV():
         print(self.userToNum)
         self.ind = 0
     def login(self, user, pas):
+        '''
+        Given a username and password, tries to find it, then sets all the local variables to the user's data.
+        '''
         try:
             if hashing.hashTag(pas) == self.userToPass[user]:
                 self.authenticated = True
@@ -45,6 +48,9 @@ class CSV():
         except:
             print("INVALID CREDENTIALS")
     def rereadCSV(self, accounts = "Accounts"):
+        '''
+        It updates the arrays with the data.
+        '''
         self.users, self.names, self.words, self.stats = (pd.read_csv(f"{accounts}.csv").values.T)
         self.users = list(self.users)
         self.names = list(self.names)
@@ -52,8 +58,14 @@ class CSV():
         self.stats = list(self.stats)
         # self.statsList = [eval(i) for i in self.stats]
         self.userToNum = {user: num for num, user in enumerate(self.users)}
+        self.userToPass = {user:pas for user, pas in zip(self.users, self.words)}
         print(self.userToNum)
-    def addClient(self, user, name, pas, stat):
+
+    def addClient(self, user, pas, name="",  stat="[]"):
+        '''
+        This adds a client to the database, with a username, password, actual name, and any past stats. 
+        If the user is already in the database, it will print an error.
+        '''
         if user in self.users:
             print("ERROR: PICK ANOTHER NAME")
             return

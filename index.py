@@ -4,7 +4,7 @@ The Super Cool Thingy
 
 import numpy as np
 import pandas as pd
-import makeAccount
+import cluster
 processedData = "processedData"
 try:
     data = pd.read_csv(F"{processedData}.csv").values()
@@ -16,7 +16,7 @@ except:
    pd.DataFrame(np.array(data).T).to_csv(f"{processedData}.csv", header=False, index=False)
 
 
-class Crohns(makeAccount.CSV):
+class Crohns(cluster.Clusters):
     def __init__(self, parent="processedData.csv", accounts = "Accounts"):
         super()
         super().__init__(accounts)
