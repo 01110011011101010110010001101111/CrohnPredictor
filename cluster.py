@@ -12,9 +12,12 @@ class Clusters(makeAccount.CSV):
         # print(self.allCoord)
     def loginAndEnter(self, user, word):
         self.login(user, word)
-        self.stuff = eval(self.getStats())
+        if (self.authenticated):
+            self.stuff = eval(self.getStats())
         # print([[x, y-x] for _, x, y, _ in stuff[0]])
         self.allCoord = np.array([np.array([x, y-x]) for j in self.stuff for _, x, y, _ in j])
+        self.percentTotal = np.array([np.array([x, percent]) for j in self.stuff for _, x, _, percent in j])
+
     def printPoints(self):
         x = [x for j in self.stuff for _, x, y, _ in j]
         y = [y-x for j in self.stuff for _, x, y, _ in j]
@@ -30,7 +33,7 @@ class Clusters(makeAccount.CSV):
             # plt.annotate(txt, (x[i], y[i]))
             plt.annotate(txt, (self.allCoord[i][0], self.allCoord[i][1]))
         plt.show()
-    def KMeans(self):
+    def KMeansRatio(self):
         from sklearn.cluster import KMeans as KM
         algorithm = KM(n_clusters=2)
         categories = algorithm.fit_predict(self.allCoord)
@@ -39,6 +42,65 @@ class Clusters(makeAccount.CSV):
         plt.scatter(algorithm.cluster_centers_[:, 0], algorithm.cluster_centers_[:, 1], c= "black", marker="*")
         for i, txt in enumerate(self.labels):
             plt.annotate(txt, (self.allCoord[i][0], self.allCoord[i][1]))
+        plt.ylabel("NO REACTION")
+        plt.xlabel("REACTION")
+        plt.annotate("NO INFLAMMATION", algorithm.cluster_centers_[0])
+        plt.annotate("CAUSES INFLAMMATION", algorithm.cluster_centers_[1])
+        plt.show()
+
+    def KMeansPercentTotal(self):
+        from sklearn.cluster import KMeans as KM
+        algorithm = KM(n_clusters=2)
+        # percentTotal = np.array([np.array([x, percent]) for j in self.stuff for _, x, _, percent in j])
+        categories = algorithm.fit_predict(self.percentTotal)
+        plt.scatter(self.percentTotal[categories == 0, 0],
+                    self.percentTotal[categories == 0, 1], c="green")
+        plt.scatter(self.percentTotal[categories == 1, 0],
+                    self.percentTotal[categories == 1, 1], c="red")
+        plt.scatter(algorithm.cluster_centers_[:, 0], algorithm.cluster_centers_[
+                    :, 1], c="black", marker="*")
+        for i, txt in enumerate(self.labels):
+            plt.annotate(
+                txt, (self.percentTotal[i][0], self.percentTotal[i][1]))
+        plt.ylabel("PERCENT")
+        plt.xlabel("TOTAL")
+        plt.annotate("NO INFLAMMATION", algorithm.cluster_centers_[0])
+        plt.annotate("CAUSES INFLAMMATION", algorithm.cluster_centers_[1])
+        plt.show()
+    
+    def MeanShiftRatio(self):
+        from sklearn.cluster import MeanShift as MS
+        algorithm = MS(bandwidth=2)
+        categories = algorithm.fit_predict(self.allCoord)
+        plt.scatter(self.allCoord[categories == 0, 0],
+                    self.allCoord[categories == 0, 1], c="green")
+        plt.scatter(self.allCoord[categories == 1, 0],
+                    self.allCoord[categories == 1, 1], c="red")
+        plt.scatter(algorithm.cluster_centers_[:, 0], algorithm.cluster_centers_[
+                    :, 1], c="black", marker="*")
+        for i, txt in enumerate(self.labels):
+            plt.annotate(txt, (self.allCoord[i][0], self.allCoord[i][1]))
+        plt.ylabel("NO REACTION")
+        plt.xlabel("REACTION")
+        plt.annotate("NO INFLAMMATION", algorithm.cluster_centers_[0])
+        plt.annotate("CAUSES INFLAMMATION", algorithm.cluster_centers_[1])
+        plt.show()
+
+    def MeanShiftPercentTotal(self):
+        from sklearn.cluster import MeanShift as MS
+        algorithm = MS(bandwidth=2)
+        categories = algorithm.fit_predict(self.percentTotal)
+        plt.scatter(self.percentTotal[categories == 0, 0],
+                    self.percentTotal[categories == 0, 1], c="green")
+        plt.scatter(self.percentTotal[categories == 1, 0],
+                    self.percentTotal[categories == 1, 1], c="red")
+        plt.scatter(algorithm.cluster_centers_[:, 0], algorithm.cluster_centers_[
+                    :, 1], c="black", marker="*")
+        for i, txt in enumerate(self.labels):
+            plt.annotate(
+                txt, (self.percentTotal[i][0], self.percentTotal[i][1]))
+        plt.ylabel("PERCENT")
+        plt.xlabel("TOTAL")
         plt.annotate("NO INFLAMMATION", algorithm.cluster_centers_[0])
         plt.annotate("CAUSES INFLAMMATION", algorithm.cluster_centers_[1])
         plt.show()
@@ -47,4 +109,7 @@ class Clusters(makeAccount.CSV):
 i = Clusters()
 i.loginAndEnter("SHREYA", "password")
 i.printPoints()
-i.KMeans()
+i.KMeansRatio()
+i.KMeansPercentTotal()
+i.MeanShiftRatio()
+i.MeanShiftPercentTotal()
