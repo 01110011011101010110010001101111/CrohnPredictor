@@ -20,7 +20,7 @@ class CSV():
         self.words = list(self.words)
         # self.statsList = [eval(i) for i in self.stats]
         self.stats = list(self.stats)
-        print(self.stats)
+        # print(self.stats)
         self.authenticated = False
         self.user = ""
         # self.numToInfo = [[] num, data for enumerate(zip(self.users, self.names, self.stats)]
@@ -40,7 +40,7 @@ class CSV():
                 self.userUsername = self.users[self.ind]
                 self.userRealName = self.names[self.ind]
                 self.userStat = eval(self.stats[self.ind])
-                print(self.userStat)
+                # print(self.userStat)
                 return True
             else:
                 print("INVALID CREDENTIALS")

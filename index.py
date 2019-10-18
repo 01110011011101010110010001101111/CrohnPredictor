@@ -25,8 +25,9 @@ class Crohns(cluster.Clusters):
         self.ingEaten = [] # Key: [[ingName, total # of inflams, total # of times eaten, % of inflams]]
     
     def loginAndUpdate(self, username, password):
-        if(self.authenticated):
-            self.login(username, password)
+        if(self.login(username, password)):
+            self.loginAndEnter(username, password)
+            # self.login(username, password)
             self.order = self.userStat
             self.orderToEaten()
     def orderToEaten(self):
@@ -110,16 +111,16 @@ class Crohns(cluster.Clusters):
             print([x[0] for x in i])
 
 i = Crohns()
-i.addClient("USERname", "Shreya C", "password", "[]")
-i.loginAndUpdate("USERname", "password")
-# i.login("SHREYA", "name")
+# i.addClient("IhateDairy", "password", "Dairy Hater", '[]')
+i.loginAndUpdate("IhateDairy", "password")
 i.openData()
-i.enterFood("FRENCH FRIES", 0)
-i.enterFood("POPCORN", 1)
-i.enterFood("SPAGHETTI", 0)
-i.enterFood("WHITE BREAD", 0)
-i.enterFood("TOMATO", 1)
-i.enterFood("MILK", 1)
-i.enterFood("YOGURT", 1)
-i.filter()
+# i.enterFood("MILK", True)
+# i.enterFood("YOGURT", True)
+# i.enterFood("PIZZA", True)
+# i.enterFood("CHICKEN", False)
+# i.filter()
 i.printFa()
+i.printPoints()
+i.printPointsII()
+i.KMeansPercentTotal()
+i.KMeansRatio()

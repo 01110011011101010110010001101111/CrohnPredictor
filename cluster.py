@@ -7,9 +7,6 @@ class Clusters(makeAccount.CSV):
     def __init__(self, accounts = "Accounts"):
         super()
         super().__init__(accounts)
-        # print("UNDER HERE")
-        # print(eval(i.getStats()))
-        # print(self.allCoord)
     def loginAndEnter(self, user, word):
         self.login(user, word)
         if (self.authenticated):
@@ -19,20 +16,39 @@ class Clusters(makeAccount.CSV):
         self.percentTotal = np.array([np.array([x, percent]) for j in self.stuff for _, x, _, percent in j])
 
     def printPoints(self):
-        x = [x for j in self.stuff for _, x, y, _ in j]
-        y = [y-x for j in self.stuff for _, x, y, _ in j]
-        self.labels = [label for j in self.stuff for label, _, _, _ in j]
-        # print(ratio)
-        plt.ylabel("NO REACTION")
-        plt.xlabel("REACTION")
-        plt.yticks(np.arange(0, max(self.allCoord[:, 0]) + 10, 1))
-        plt.xticks(np.arange(0, max(self.allCoord[:, 1]) + 10, 1))
-        # plt.scatter(np.array(x), np.array(y))
-        plt.scatter(self.allCoord[:, 0], self.allCoord[:, 1])
-        for i, txt in enumerate(self.labels):
-            # plt.annotate(txt, (x[i], y[i]))
-            plt.annotate(txt, (self.allCoord[i][0], self.allCoord[i][1]))
-        plt.show()
+        if (self.authenticated):
+            x = [x for j in self.stuff for _, x, y, _ in j]
+            y = [y-x for j in self.stuff for _, x, y, _ in j]
+            self.labels = [label for j in self.stuff for label, _, _, _ in j]
+            # print(ratio)
+            plt.ylabel("NO REACTION")
+            plt.xlabel("REACTION")
+            # print(self.allCoord)
+            plt.yticks(np.arange(0, max(self.allCoord[:, 0]) + 10, 1))
+            plt.xticks(np.arange(0, max(self.allCoord[:, 1]) + 10, 1))
+            # plt.scatter(np.array(x), np.array(y))
+            plt.scatter(self.allCoord[:, 0], self.allCoord[:, 1])
+            for i, txt in enumerate(self.labels):
+                # plt.annotate(txt, (x[i], y[i]))
+                plt.annotate(txt, (self.allCoord[i][0], self.allCoord[i][1]))
+            plt.show()
+
+    def printPointsII(self):
+        if self.authenticated:
+            x = [x for j in self.stuff for _, x, y, _ in j]
+            y = [y-x for j in self.stuff for _, x, y, _ in j]
+            self.labels = [label for j in self.stuff for label, _, _, _ in j]
+            # print(ratio)
+            plt.ylabel("PERCENT OF REACTIONS")
+            plt.xlabel("TOTAL NUM")
+            plt.yticks(np.arange(0, 1.1, 0.1))
+            plt.xticks(np.arange(0, max(self.percentTotal[:, 1]) + 10, 1))
+            # plt.scatter(np.array(x), np.array(y))
+            plt.scatter(self.percentTotal[:, 0], self.percentTotal[:, 1])
+            for i, txt in enumerate(self.labels):
+                # plt.annotate(txt, (x[i], y[i]))
+                plt.annotate(txt, (self.percentTotal[i][0], self.percentTotal[i][1]))
+            plt.show()
     def KMeansRatio(self):
         from sklearn.cluster import KMeans as KM
         algorithm = KM(n_clusters=2)
@@ -106,10 +122,11 @@ class Clusters(makeAccount.CSV):
         plt.show()
 
 
-i = Clusters()
-i.loginAndEnter("SHREYA", "password")
-i.printPoints()
-i.KMeansRatio()
-i.KMeansPercentTotal()
-i.MeanShiftRatio()
-i.MeanShiftPercentTotal()
+# i = Clusters()
+# i.loginAndEnter("SHREYA", "password")
+# i.printPoints()
+# i.printPointsII()
+# i.KMeansRatio()
+# i.KMeansPercentTotal()
+# i.MeanShiftRatio()
+# i.MeanShiftPercentTotal()
