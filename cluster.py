@@ -14,13 +14,18 @@ class Clusters(makeAccount.CSV):
         self.login(user, word)
         if (self.authenticated):
             self.stuff = eval(self.getStats())
-            self.allCoord = np.array([np.array([x, y-x]) for j in self.stuff for _, x, y, _ in j])
-            self.partPercent = np.array([np.array([x, percent]) for j in self.stuff for _, x, _, percent in j])
+            # print(self.restrict)
+            self.allCoord = np.array([np.array([x, y-x]) for j in self.stuff for ing, x, y, _ in j if ing not in self.restrict])
+            self.partPercent = np.array([np.array(
+                [x, percent]) for j in self.stuff for ing, x, _, percent in j if ing not in self.restrict])
             self.percentTotal = np.array(
-                [np.array([y, percent]) for j in self.stuff for _, _, y, percent in j])
-            x = [x for j in self.stuff for _, x, _, _ in j]
-            y = [y-x for j in self.stuff for _, x, y, _ in j]
-            self.labels = [label for j in self.stuff for label, _, _, _ in j]
+                [np.array([y, percent]) for j in self.stuff for ing, _, y, percent in j if ing not in self.restrict])
+            x = [x for j in self.stuff for ing, x, _,
+                 _ in j if ing not in self.restrict]
+            y = [y-x for j in self.stuff for ing, x,
+                 y, _ in j if ing not in self.restrict]
+            self.labels = [label for j in self.stuff for label,
+                           _, _, _ in j if label not in self.restrict]
 
     def printPointsRatio(self):
         '''
@@ -50,10 +55,6 @@ class Clusters(makeAccount.CSV):
         X-axis: # Reactions
         '''
         if self.authenticated:
-            # x = [x for j in self.stuff for _, x, y, _ in j]
-            # y = [y-x for j in self.stuff for _, x, y, _ in j]
-            # self.labels = [label for j in self.stuff for label, _, _, _ in j]
-            # print(ratio)
             plt.ylabel("PERCENT OF REACTIONS")
             plt.xlabel("NUM OF REACTIONS")
             plt.yticks(np.arange(0, 1.1, 0.1))
@@ -323,16 +324,17 @@ class Clusters(makeAccount.CSV):
 
 i = Clusters()
 i.loginAndEnter("SHREYA", "password")
-i.printPointsRatio()
-i.printPointsPartPercent()
+# i.printPointsRatio()
+# i.printPointsPartPercent()
+i.addRestriction("CITRIC ACID")
 i.printPointsPercentTotal()
-i.KMeansRatio()
-i.KMeansPartPercent()
-i.KMeansPercentTotal()
-i.MeanShiftRatio()
-i.KMeansPartPercent()
-i.MeanShiftPercentTotal()
-i.KModesRatio()
-i.KMeansPartPercent()
-i.KModePercentTotal()
-i.handsOn()
+# i.KMeansRatio()
+# i.KMeansPartPercent()
+# i.KMeansPercentTotal()
+# i.MeanShiftRatio()
+# i.KMeansPartPercent()
+# i.MeanShiftPercentTotal()
+# i.KModesRatio()
+# i.KMeansPartPercent()
+# i.KModePercentTotal()
+# i.handsOn()

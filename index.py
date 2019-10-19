@@ -23,6 +23,7 @@ class Crohns(cluster.Clusters):
         self.food = data[0]
         self.ing = data[1]
         self.ingEaten = [] # Key: [[ingName, total # of inflams, total # of times eaten, % of inflams]]
+        self.toRemove = ["WATER", "SALT"]
     
     def loginAndUpdate(self, username, password):
         if(self.login(username, password)):
@@ -112,15 +113,15 @@ class Crohns(cluster.Clusters):
 
 i = Crohns()
 # i.addClient("IhateDairy", "password", "Dairy Hater", '[]')
-i.loginAndUpdate("IhateDairy", "password")
-i.openData()
+# i.loginAndUpdate("IhateDairy", "password")
+# i.openData()
 # i.enterFood("MILK", True)
 # i.enterFood("YOGURT", True)
 # i.enterFood("PIZZA", True)
 # i.enterFood("CHICKEN", False)
 # i.filter()
-i.printFa()
-i.printPoints()
-i.printPointsII()
-i.KMeansPercentTotal()
-i.KMeansRatio()
+# i.printFa()
+# i.printPoints()
+# i.printPointsII()
+# i.KMeansPercentTotal()
+# i.KMeansRatio()

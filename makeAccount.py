@@ -14,12 +14,13 @@ import hashing
 
 class CSV():
     def __init__(self, accounts = "Accounts"):
-        self.users, self.names, self.words, self.stats = (pd.read_csv(f"{accounts}.csv").values.T)
+        self.users, self.names, self.words, self.stats, self.restrictions = (pd.read_csv(f"{accounts}.csv").values.T)
         self.users = list(self.users)
         self.names = list(self.names)
         self.words = list(self.words)
         # self.statsList = [eval(i) for i in self.stats]
         self.stats = list(self.stats)
+        self.restrictions = list(self.restrictions)
         # print(self.stats)
         self.authenticated = False
         self.user = ""
@@ -40,6 +41,7 @@ class CSV():
                 self.userUsername = self.users[self.ind]
                 self.userRealName = self.names[self.ind]
                 self.userStat = eval(self.stats[self.ind])
+                self.restrict = eval(self.restrictions[self.ind])
                 # print(self.userStat)
                 return True
             else:
@@ -51,17 +53,18 @@ class CSV():
         '''
         It updates the arrays with the data.
         '''
-        self.users, self.names, self.words, self.stats = (pd.read_csv(f"{accounts}.csv").values.T)
+        self.users, self.names, self.words, self.stats, self.restrictions = (pd.read_csv(f"{accounts}.csv").values.T)
         self.users = list(self.users)
         self.names = list(self.names)
         self.words = list(self.words)
         self.stats = list(self.stats)
+        self.restrictions = list(self.restrictions)
         # self.statsList = [eval(i) for i in self.stats]
         self.userToNum = {user: num for num, user in enumerate(self.users)}
         self.userToPass = {user:pas for user, pas in zip(self.users, self.words)}
         print(self.userToNum)
 
-    def addClient(self, user, pas, name="",  stat="[]"):
+    def addClient(self, user, pas, name="",  stat="[]", restriction = "[]"):
         '''
         This adds a client to the database, with a username, password, actual name, and any past stats. 
         If the user is already in the database, it will print an error.
@@ -73,6 +76,7 @@ class CSV():
         self.names.append(name)
         self.words.append(hashing.hashTag(pas))
         self.stats.append(stat)
+        self.restrictions.append(restriction)
         self.updateCSV()
         self.rereadCSV()
     def editStats(self, newStat):
@@ -109,14 +113,28 @@ class CSV():
         else: 
             print("ERROR: NOT AUTHENTICATED")
             return
+    def addRestriction(self, res):
+        if self.authenticated:
+            x = eval(self.restrictions[self.ind])
+            if res not in x:
+                x.append(res)
+                hold = str(x)
+                print(hold)
+                self.restrictions[self.ind] = hold
+                self.updateCSV()
+                self.rereadCSV()
+                self.restrict = eval(self.restrictions[self.ind])
+        else:
+            print("ERROR: NOT AUTHENTICATED")
     def updateCSV(self):
-        pd.DataFrame(np.array([self.users, self.names, self.words, self.stats]).T).to_csv(f"Accounts.csv", header=["USERNAMES", "NAMES", "PASSWORDS", "INFO"], index=False)
+        pd.DataFrame(np.array([self.users, self.names, self.words, self.stats, self.restrictions]).T).to_csv(f"Accounts.csv", header=["USERNAMES", "NAMES", "PASSWORDS", "INFO", "RESTRICTIONS"], index=False)
 
-# i = CSV()
+i = CSV()
 # i.addClient("SHREYA", "Shreya", "name", "[]")
 # i.addClient("SHREYA", "Shreya", "passw0rd", "[]")
 # print(i.getStats())
-# i.login("fr", "passwo9f")
+i.login("SHREYA", "password")
+i.addRestriction("SUGAR")
 # print(i.getStats())
 # i.login("SHREYA", "name")
 # print(i.getStats())

@@ -3,18 +3,8 @@ import pandas as pd
 
 def parsify(parent="Food.csv"):
     thing = pd.read_csv(parent).values
-    # print(thing[:, 1])
-    # print(thing[:, 7])
     food = thing[:, 0]
     ing = thing[:, 1]
-    # food1 = []
-    # ing1 = []
-    # for i, j in zip(food, ing):
-    #     if (type(j) == str):
-    #         food1.append(i.upper())
-    #         ing1.append(j.upper())
-    # food = food1
-    # ing = ing1
     delete = [
         [" (FOR COLOR)", ""],
         ["ONE OR MORE OF THE FOLLOWING: ", ""],
@@ -44,7 +34,21 @@ def parsify(parent="Food.csv"):
         ["LESS THAN 1% OF ", ""],
         ["LESS THAN 1% OF, ", ""],
         ["LESS THAN 2% ", ""],
-        ["LESS THAN 2%, ", ""]
+        ["LESS THAN 2%, ", ""],
+        [" {", ", "],
+        ["{", ", "],
+        ["}", ""],
+        [", SALT", ""],
+        [", WITH SALT", ""], 
+        [", SEA SALT", ""],
+        [", WITH SALT ADDED", ""], 
+        [", AND SALT", ""],
+        [", FILTERED WATER", ""],
+        [", WATER", ""]
+    ]
+    semiabsurd = [ 
+        "WATER",
+        "SALT"
     ]
     for ii in range(len(ing)):
         if type(ing[ii]) == str: ing[ii] = ing[ii].upper()
@@ -57,4 +61,11 @@ def parsify(parent="Food.csv"):
                 canPlay = False
         if canPlay:
             ing[ii] = ing[ii].split(", ")
+            for i in semiabsurd:
+                try: 
+                    ing[ii].remove(i)
+                    # print("NO SALT")
+                except:
+                    pass
+
     return [food, ing]
