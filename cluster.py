@@ -322,12 +322,12 @@ class Clusters(makeAccount.CSV):
         
 
 
-i = Clusters()
-i.loginAndEnter("SHREYA", "password")
+# i = Clusters()
+# i.loginAndEnter("SHREYA", "password")
 # i.printPointsRatio()
 # i.printPointsPartPercent()
-i.addRestriction("CITRIC ACID")
-i.printPointsPercentTotal()
+# i.addRestriction("CITRIC ACID")
+# i.printPointsPercentTotal()
 # i.KMeansRatio()
 # i.KMeansPartPercent()
 # i.KMeansPercentTotal()
