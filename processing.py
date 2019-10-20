@@ -9,13 +9,40 @@ def parsify(parent="Food.csv"):
     ing = thing[:, 1]
     findFood = ["BARBECUE SAUCE", "MUSTARD", "PIZZA CRUST",
                 "SORBET", "HUMMUS", "GELATO", "SPAGHETTI", "MACARONI", "PASTA SAUCE", 
-                "TOMATO SAUCE", "CHEDDAR CHEESE", "CORN TORTILLA CHIPS", "SOUR PATCH"]
+                "TOMATO SAUCE", "CHEDDAR CHEESE", "CORN TORTILLA CHIPS", "SOUR PATCH", 
+                "FRESH GROUND BEEF", "BLENDED LOW-FAT GREEK YOGURT", "ORGANIC PROTEIN POWDER",
+                "ORANGE JUICE", "CORNBREAD CRISPS", "ORGANIC TORTILLA CHIPS", "STRING CHEESE", 
+                "SPARKLING ITALIAN SODA", "MAPLE PORK SAUSAGE", "BURGER", "BEEF PATTIES", "PIZZA SAUCE",
+                "WALNUT BUTTER", "COCONUT OIL", "SHREDDED 4 CHEESE MEXICAN BLEND", "COTTAGE CHEESE",
+                "GRANOLA BARS", "MOCHI", "MOZZARELLA CHEESE", "PIZZA", "BAKING FLOUR", "RITZ CRACKERS",
+                "UNCURED HAM", "HIGH PROTEIN BARS", "FILLED MILK CHOCOLATE BAR", "PROTEIN CAKES", "AUTHENTIC CITRUS SODA",
+                "SUPER PREMIUM ICE CREAM", "BAGELS", "SPARKLING WATER", "PROTEIN & FIBER BARS", "SOUR CREAM", "GRANOLA BAR",
+                "DILL PICKLE", "PROPEL", "HARD CANDY", "GREEK NONFAT YOGURT", "WHEAT CEREAL", "KETCHUP", "MAYONNAISE", "POCKET SANDWICH",
+                "VINEGAR", "PURE NON-CARBONATED WATER", "Chex Mix", "LEMONADE", "Coca-Cola", "Diet Coke", "ALOE VERA DRINK", "TROPICS ICE CREAM",
+                "JELLY MINI STICK"]
     companies = ["FRESH & EASY", "NABISCO",
                  "McCafe", "STATER BROS.", "GREAT MIDWEST", "MARANATHA", "NANCY'S", 
                  "PRAEGER'S", "ANDREW & EVERETT", "MARIANO'S", "ROUNDY'S", "HOLA", "AMAZONAS", 
                  "PACIFIC SURF", "ALBERTSON'S", "ESSENTIAL EVERYDAY", "CLANCY'S", "MADHAVA", "SCHNUCKS",
                  "JOHN WM. MACY'S", "FOLLOW YOUR HEART", "STAHLBUSH ISLAND FARMS", "Totino's", "PINES",
-                 "CADBURY", "TOBLERONE", "GREEN & BLACK'S"]
+                 "CADBURY", "TOBLERONE", "GREEN & BLACK'S", "NATURE'S GARDEN", "FAIRWAY", 
+                 "ELLA'S", "SARAH", "NICE!", "TARGET CORPORATION", "RALEY'S", "GIANT", "AHOLD",
+                 "LOFTHOUSE", "HARMONS", "NUCCIO'S", "MEIJER", "K&G", "KUM & GO", "BOULDER CANYON", 
+                 "MAIN & GEARY", "RIVERTRAIL FOODS", "BIG Y", "SWEET SHOP USA", "REDNER'S", "SHUR FINE",
+                 "HAMMOND'S", "BUBBA'S FINE FOODS", "BIG WIN", "TOO GOOD GOURMET", "VALU TIME", "CANDY SHOPPE",
+                 "ORIGINAL GOURMET", "DSD MERCHANDISERS", "KROGER", "FIESTA PICO", "LONG GROVE CONFECTIONERY CO.",
+                 "LINDT", "PUBLIX", "SPLURGE", "FRANKFORD", "TYRRELL'S", "BETSY ANN", "REBELL!ON", "TATE'S BAKE SHOP",
+                 "SUPERIOR SNACKS", "RADZ", "HANNAFORD", "H-E-B", "JEWEL BAKE SHOP", "WILD HARVEST", "TRISCUIT", "TRIDENT", 
+                 "BELVITA", "FIZZ & CO SELTZERS", "PROTEIN & PROBIOTICS", "Blue Sky Zero", "TERRY'S", "PHILADELPHIA",
+                 "SHAKERS", "KOMBUCHA", "NEW ORLEANS", "RIPPLE", "KELLOGG'S", "100% JUICE", "JIMMY DEAN", "TYSON", "1/4",
+                 "TABATCHNICK", "ETHINIC GOURMET", "JENNIE-O", "GORTON'S", "POLANER", "WELCH'S", "WEIS", "MRS DASH",
+                 "BLUE PLATE", "PATH OF LIFE", "LITTLE SECRETS", "SPARTAN", "UDI'S", "GREAT VALUE", "YOCRUNCH", "THE LAUGHING COW",
+                 "HT TRADERS", "TURKEY HILL", "SPROUT", "KASKEY'S", "CAINS", "OATS & MORE", "FOOD LION", "EMERIL'S", "NATURE'S CRUNCH", 
+                 "PLSBRY", "CSCDN FARM ORG", "ANNIES HMGRWN ORG", "YOPLAIT", "KETA", "GMILLS", "Kellogg's", "NAT VLY", "CHEF-CRAFTED", 
+                 "Minute Maid", "SQUEEZE & GO", "PREMIUM SPANISH", "STELLA", "NATHAN", "BRYAN", "DRAGONE", "MRS. SMITH'S",
+                 "SUPERFOOD", "ROLAND", "FORD FARM", "JEFF'S NATURALS", "FULL CIRCLE", "SANTA BARBARA OLIVE CO.", "WYLWOOD", "MY ESSENTIALS",
+                 "CLOVER VALLEY", "WILD THINGS", "COLONNA", "SUN OF ITALY", "SHOPRITE", "VOLPI", "GIORGIO", "FRESH FINDS", "DUNCAN HINES", "MILK MAGIC",
+                 "SHOPRITE", "MARIE CALLENDERS", "BANQUET", "KID CUISINE", "ORVILLE", "SWISS MISS", "ROSARITA"]
     concatFoods = [[] for i in findFood]
     togo = []
     print(ing.shape)
@@ -83,10 +110,11 @@ def parsify(parent="Food.csv"):
             try:
                 ing[ii] = word[1].join(ing[ii].split(word[0]))
             except:
-                ing[ii] = float("NaN")
+                ing[ii] = None
+                food[ii] = None
                 canPlay = False
         for i in companies:
-            if food[ii].find(i) != -1:
+            if food[ii] and food[ii].find(i) != -1:
                 print(food[ii])
                 food[ii] = None
                 ing[ii] = None
