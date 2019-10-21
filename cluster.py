@@ -1,6 +1,8 @@
 import numpy as np 
 import makeAccount
 import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
 
 class Clusters(makeAccount.CSV):
@@ -142,6 +144,7 @@ class Clusters(makeAccount.CSV):
         '''
         from sklearn.cluster import KMeans as KM
         algorithm = KM(n_clusters=2)
+        fig = plt.figure()
         # partPercent = np.array([np.array([x, percent]) for j in self.stuff for _, x, _, percent in j])
         categories = algorithm.fit_predict(self.percentTotal)
         plt.scatter(self.percentTotal[categories == 0, 0],
@@ -158,7 +161,22 @@ class Clusters(makeAccount.CSV):
         plt.annotate("NO INFLAMMATION", algorithm.cluster_centers_[0])
         plt.annotate("CAUSES INFLAMMATION", algorithm.cluster_centers_[1])
         plt.title("K-Means: # Observations, % Reactions")
-        plt.show()
+        # plt.show()
+        # mpld3.show()
+        # plt.savefig()
+
+
+
+        tmpfile = BytesIO()
+        # plt.savefig('test.png')
+        fig.savefig(tmpfile, format='png')
+        encoded = base64.b64encode(tmpfile.getvalue())
+
+        html = '<img src=\'data:image/png;base64,{}\'>'.format(encoded.decode("utf-8"))
+
+        with open('KMeansPercentTotal.html', 'w') as f:
+            f.write(html)
+        # print(mpld3.fig_to_html())
     
     def KModesRatio(self):
         '''
@@ -322,15 +340,15 @@ class Clusters(makeAccount.CSV):
         
 
 
-# i = Clusters()
-# i.loginAndEnter("SHREYA", "password")
+i = Clusters()
+i.loginAndEnter("SHREYA", "password")
 # i.printPointsRatio()
 # i.printPointsPartPercent()
 # i.addRestriction("CITRIC ACID")
 # i.printPointsPercentTotal()
 # i.KMeansRatio()
 # i.KMeansPartPercent()
-# i.KMeansPercentTotal()
+i.KMeansPercentTotal()
 # i.MeanShiftRatio()
 # i.KMeansPartPercent()
 # i.MeanShiftPercentTotal()
