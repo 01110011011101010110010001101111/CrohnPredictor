@@ -338,12 +338,13 @@ class Clusters(makeAccount.CSV):
             plt.title("MeanShift: # Observations, % Reactions")
             plt.show()
 
-    def handsOn(self):
+    def setTheory(self):
         '''
         Experiment for now
         '''
         if self.authenticated:
             print(self.percentTotal)
+            
         '''
         Okay. Let's start with a threshold value. I don't want any ingredients under x to be counted.
         '''

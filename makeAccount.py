@@ -13,8 +13,9 @@ import hashing
 # stats = np.array(["INFO", "YES"])
 
 class CSV():
-    def __init__(self, accounts = "Accounts"):
+    def __init__(self, accounts = "Accounts", accounts2 = "Accounts2"):
         self.users, self.names, self.words, self.stats, self.restrictions = (pd.read_csv(f"{accounts}.csv").values.T)
+        _, self.foodData = (pd.read_csv(f"{accounts2}.csv").values.T)
         self.users = list(self.users)
         self.names = list(self.names)
         self.words = list(self.words)
@@ -49,22 +50,24 @@ class CSV():
                 return False
         except:
             print("INVALID CREDENTIALS")
-    def rereadCSV(self, accounts = "Accounts"):
+    def rereadCSV(self, accounts = "Accounts", accounts2 = "Accounts2"):
         '''
         It updates the arrays with the data.
         '''
         self.users, self.names, self.words, self.stats, self.restrictions = (pd.read_csv(f"{accounts}.csv").values.T)
+        _, self.foodData = (pd.read_csv(f"{accounts2}.csv").values.T)
         self.users = list(self.users)
         self.names = list(self.names)
         self.words = list(self.words)
         self.stats = list(self.stats)
         self.restrictions = list(self.restrictions)
+        self.foodData = list(self.foodData) # [Food, Bool Inflam, Ingredients]
         # self.statsList = [eval(i) for i in self.stats]
         self.userToNum = {user: num for num, user in enumerate(self.users)}
         self.userToPass = {user:pas for user, pas in zip(self.users, self.words)}
         print(self.userToNum)
 
-    def addClient(self, user, pas, name="",  stat="[]", restriction = "[]"):
+    def addClient(self, user, pas, name="",  stat="[]", restriction = "[]", foodData = "[]"):
         '''
         This adds a client to the database, with a username, password, actual name, and any past stats. 
         If the user is already in the database, it will print an error.
@@ -77,11 +80,20 @@ class CSV():
         self.words.append(hashing.hashTag(pas))
         self.stats.append(stat)
         self.restrictions.append(restriction)
+        self.foodData.append(foodData)
         self.updateCSV()
         self.rereadCSV()
     def editStats(self, newStat):
         if self.authenticated:
             self.stats[self.ind] = newStat
+            self.updateCSV()
+            self.rereadCSV()
+        else:
+            print("ERROR: NOT AUTHENTICATED")
+    def editFoodData(self, fooddata):
+        if self.authenticated:
+            print(self.foodData, len(self.foodData))
+            self.foodData[self.ind] = fooddata
             self.updateCSV()
             self.rereadCSV()
         else:
@@ -113,6 +125,12 @@ class CSV():
         else: 
             print("ERROR: NOT AUTHENTICATED")
             return
+    def getFoodData(self):
+        if self.authenticated:
+            return self.foodData[self.ind]
+        else:
+            print("ERROR: NOT AUTHENTICATED")
+            return
     def addRestriction(self, res):
         if self.authenticated:
             x = eval(self.restrictions[self.ind])
@@ -127,14 +145,19 @@ class CSV():
         else:
             print("ERROR: NOT AUTHENTICATED")
     def updateCSV(self):
-        pd.DataFrame(np.array([self.users, self.names, self.words, self.stats, self.restrictions]).T).to_csv(f"Accounts.csv", header=["USERNAMES", "NAMES", "PASSWORDS", "INFO", "RESTRICTIONS"], index=False)
+        pd.DataFrame(np.array([self.users, self.names, self.words, self.stats, self.restrictions]).T).to_csv(
+            f"Accounts.csv", header=["USERNAMES", "NAMES", "PASSWORDS", "INFO", "RESTRICTIONS"], index=False)
+        pd.DataFrame(np.array([self.users, self.foodData]).T).to_csv(
+            f"Accounts2.csv", header=["USERNAMES", "RESTRICTIONS"], index=False)
 
 i = CSV()
 # i.addClient("SHREYA", "Shreya", "name", "[]")
-# i.addClient("SHREYA", "Shreya", "passw0rd", "[]")
+i.addClient("FoodData", "password", "Random Name", "[]", "[]", "[]")
 # print(i.getStats())
 i.login("SHREYA", "password")
-i.addRestriction("SUGAR")
+# i.addRestriction("SUGAR")
+i.editFoodData(["TOMATOS", True, ["Ing1", "Ing2", "Ing3"]])
+print(i.getFoodData())
 # print(i.getStats())
 # i.login("SHREYA", "name")
 # print(i.getStats())
