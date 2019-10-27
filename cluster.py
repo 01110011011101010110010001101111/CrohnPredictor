@@ -337,17 +337,6 @@ class Clusters(makeAccount.CSV):
             plt.annotate("CAUSES INFLAMMATION", algorithm.cluster_centers_[1])
             plt.title("MeanShift: # Observations, % Reactions")
             plt.show()
-
-    def setTheory(self):
-        '''
-        Experiment for now
-        '''
-        if self.authenticated:
-            print(self.percentTotal)
-            
-        '''
-        Okay. Let's start with a threshold value. I don't want any ingredients under x to be counted.
-        '''
         
 
 

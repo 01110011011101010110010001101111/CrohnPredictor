@@ -7,7 +7,7 @@ import pandas as pd
 import cluster
 processedData = "processedData"
 try:
-    data = pd.read_csv(F"{processedData}.csv").values()
+    data = pd.read_csv(F"{processedData}.csv", header=None).values.T
 except:
    # Import our processing code
    import processing
@@ -112,10 +112,67 @@ class Crohns(cluster.Clusters):
         for i in self.order:
             print(f"\nOCCURING IN {i[0][3]*100}%:")
             print([x[0] for x in i])
+    def setTheory(self):
+        '''
+        Experiment for now
+        '''
+        if self.authenticated:
+            self.bestIng = [ans for ans, _, _, _ in self.order[-1]]
+            print(self.bestIng)
+            
+        '''
+        Okay. Let's start with a threshold value. I don't want any ingredients under x to be counted.
+        '''
+    def getGoodIng(self):
+        if self.authenticated:
+            self.filter()
+            self.bestIng = [ans for ans, _, _, _ in self.order[-1]]
+            print(self.bestIng)
+    def getBadIng(self):
+        if self.authenticated:
+            self.filter()
+            self.worstIng = [ans for ans, _, _, _ in self.order[0]]
+            print(self.worstIng)
+    def getBadFood(self, limit = 10, random = True):
+        if self.authenticated:
+            self.badFood = []
+            self.getBadIng()
+            for num, stuff in enumerate(data[1]):
+                stuff = eval(stuff)
+                for x in stuff:
+                    for i in self.worstIng:
+                        if (x == i): 
+                            self.badFood.append(data[0][num])
+                            break
+                if (len(self.badFood) > limit):
+                    break
+            # print("HELLO")
+            print(self.badFood)
+    def getGoodFood(self, limit = 10, random = True):
+        if self.authenticated:
+            self.goodFood = []
+            self.getGoodIng()
+            for num, stuff in enumerate(data[1]):
+                stuff = eval(stuff)
+                hold = True
+                for x in stuff:
+                    hold = x in self.bestIng
+                    if (not hold): break
+                if (hold): 
+                    self.goodFood.append(data[0][num])
+                if (len(self.goodFood) > limit):
+                    break
+            # print("HELLO")
+            print(self.goodFood)
 
 i = Crohns()
 # i.addClient("IhateDairy", "password", "Dairy Hater", '[]')
-# i.loginAndUpdate("IhateDairy", "password")
+i.loginAndUpdate("IhateDairy", "password")
+i.setTheory()
+i.getGoodIng()
+i.getBadIng()
+i.getBadFood()
+i.getGoodFood()
 # i.openData()
 # i.enterFood("MILK", True)
 # i.enterFood("YOGURT", True)
