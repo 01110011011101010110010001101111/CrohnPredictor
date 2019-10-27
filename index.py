@@ -31,6 +31,7 @@ class Crohns(cluster.Clusters):
             # self.login(username, password)
             self.order = self.userStat
             self.orderToEaten()
+            self.openData()
     def orderToEaten(self):
         '''
         Makes the fancy array based on % change into just an array of the ingredients eaten
