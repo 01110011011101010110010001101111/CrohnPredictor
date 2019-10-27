@@ -70,6 +70,7 @@ class Crohns(cluster.Clusters):
                         break
                 if not inIt: # If they haven't eaten the food yet.
                     self.ingEaten.append([i, int(inflammed), 1, float(inflammed)])
+            self.filter()  
 
     def findFood(self, food):
         '''
